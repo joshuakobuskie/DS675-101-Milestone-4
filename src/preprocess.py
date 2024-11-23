@@ -4,25 +4,32 @@ def preprocess_dataset(dataframe):
 	#Drop the User ID (Not a useful feature)
 	dataframe.drop(['User ID'], axis=1, inplace=True)
 
-	#Convert ordinal data to numerical data
+	# Convert categorical data to numerical data
+
+	# Ordinal data
 	dataframe["Physical Activity Level"] = dataframe["Physical Activity Level"].map({
 		'low' : -1,
 		'medium' : 0,
 		'high': 1
 	})
+
 	dataframe["Dietary Habits"] = dataframe["Dietary Habits"].map({
-		'healthy' : -1,
+		'healthy' : 1,
 		'medium' : 0,
-		'unhealthy' : 1,
+		'unhealthy' : -1,
 	})
+
+	# Binary data
 	dataframe["Sleep Disorders"] = dataframe["Sleep Disorders"].map({
 		'no' : -1,
 		'yes' : 1,
 	})
+
 	dataframe["Medication Usage"] = dataframe["Medication Usage"].map({
 		'no' : -1,
 		'yes' : 1,
 	})
+	
 	dataframe["Gender"] = dataframe["Gender"].map({
 		'm' : -1,
 		'f': 1

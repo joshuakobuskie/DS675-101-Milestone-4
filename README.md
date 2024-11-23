@@ -6,7 +6,7 @@ NJIT Fall 2024: DS675-101 Machine Learning - Project Milestone 4
 - [x] Feature transformations like one-hot-encoding, standard scaling of the relevant features (if applicable)
 - [x] Handling missing values (if applicable)
 ## Exploratory Data Analysis
-- [ ] Distribution plots of each feature
+- [x] Distribution plots of each feature
 - [ ] Target variable distribution (if the problem is supervised classification problem)
 - [x] Correlation matrix of features 
 - [ ] Correlation of features with the target variable

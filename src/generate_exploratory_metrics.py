@@ -18,3 +18,15 @@ def generate_exploratory_metrics(dataframe):
 			ax.text(j, i, f'{value:.2f}', ha='center', va='center', fontsize=15, color = 'black' if value > 0 else 'white')
 
 	pyplot.savefig('../assets/correlation_matrix.jpg')
+
+
+	fig, ax = pyplot.subplots(4, 3, figsize=(12, 10))
+
+	for i in range(11):
+		column = dataframe[feature_names[i]]
+		ax[i // 3, i % 3].hist(column)
+		ax[i // 3, i % 3].set_title(feature_names[i] + " distribution")
+
+	pyplot.subplots_adjust(hspace=0.5)
+	pyplot.savefig('../assets/distribution_plots.jpg')
+

@@ -9,7 +9,7 @@ NJIT Fall 2024: DS675-101 Machine Learning - Project Milestone 4
 - [x] Distribution plots of each feature
 - [x] Target variable distribution (if the problem is supervised classification problem)
 - [x] Correlation matrix of features 
-- [ ] Correlation of features with the target variable
+- [X] Correlation of features with the target variable
 - [ ] Address the class-imbalance problem (if the target variable is imbalanced)
 ## Development of the Machine Learning Model
 - [ ] Build multiple ML models and compare them using hyperparameter tuning (Grid search or random search) using cross-validation

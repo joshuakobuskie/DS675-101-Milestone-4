@@ -7,7 +7,7 @@ NJIT Fall 2024: DS675-101 Machine Learning - Project Milestone 4
 - [x] Handling missing values (if applicable)
 ## Exploratory Data Analysis
 - [x] Distribution plots of each feature
-- [ ] Target variable distribution (if the problem is supervised classification problem)
+- [x] Target variable distribution (if the problem is supervised classification problem)
 - [x] Correlation matrix of features 
 - [ ] Correlation of features with the target variable
 - [ ] Address the class-imbalance problem (if the target variable is imbalanced)

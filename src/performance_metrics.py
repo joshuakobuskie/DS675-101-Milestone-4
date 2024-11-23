@@ -1,6 +1,3 @@
-from sklearn.metrics import brier_score_loss
-from sklearn.metrics import roc_auc_score
-
 # Gets the confusion matric from the true and predicted values
 def get_confusion_matrix(y_true, y_pred):
 

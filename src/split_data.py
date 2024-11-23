@@ -34,7 +34,3 @@ def train_test_split(dataframe, target, test_size=0.1, rand_state=None):
     train_dataframe = dataframe.loc[train_indexes].reset_index(drop=True)
     test_dataframe = dataframe.loc[test_indexes].reset_index(drop=True)
     return train_dataframe, test_dataframe
-
-# Testing
-# dataframe = pandas.read_csv("../data/Health_Sleep_Statistics.csv")
-# print(train_test_split(dataframe, target="Sleep Quality"))

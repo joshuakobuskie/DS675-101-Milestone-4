@@ -3,7 +3,7 @@ from matplotlib import pyplot
 
 def generate_exploratory_metrics(dataframe):
 	correlation_matrix = dataframe.corr()
-	feature_names = ['Age','Gender','Sleep Quality','Bedtime','Wake-up Time','Daily Steps','Calories Burned','Physical Activity Level','Dietary Habits','Sleep Disorders','Medication Usage']
+	feature_names = dataframe.columns.to_numpy()
 	
 	fig, ax = pyplot.subplots(figsize=(6, 5))
 	pyplot.title('Correlation matrix')

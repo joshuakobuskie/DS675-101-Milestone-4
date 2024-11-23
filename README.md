@@ -16,3 +16,4 @@ NJIT Fall 2024: DS675-101 Machine Learning - Project Milestone 4
 - [ ] Confusion matrix
 - [ ] f1-score, AUC-ROC or R2 score (for regression)
 - [ ] SHAP value of each feature
+- [ ] Interpretation of the model (for simple models like Logistic Regression, interpretation of the final weights, for decision trees the plot of the trees, etc.)

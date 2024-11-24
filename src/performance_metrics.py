@@ -46,11 +46,7 @@ def calculate_metrics(true_positive, false_positive, true_negative, false_negati
     recall = true_positive / positives
     precision = true_positive / (true_positive + false_positive)
 
-    #F1 can encounter 0 division error
-    if precision + recall == 0:
-        f1_score = 0.0
-    else:
-        f1_score = 2 * (precision * recall) / (precision + recall)
+    f1_score = 2 * (precision * recall) / (precision + recall)
 
     accuracy = (true_positive + true_negative) / (positives + negatives)
     error_rate = (false_positive + false_negative) / (positives + negatives)

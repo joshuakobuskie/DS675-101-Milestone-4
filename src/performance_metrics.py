@@ -1,6 +1,5 @@
 # Gets the confusion matric from the true and predicted values
 def get_confusion_matrix(y_true, y_pred):
-
     # Find all unique values
     labels = sorted(set(y_true) | set(y_pred))
 
@@ -9,21 +8,22 @@ def get_confusion_matrix(y_true, y_pred):
 
     # Fill in matrix
     for true_val, pred_val in zip(y_true, y_pred):
-        confusion_matrix[true_val][pred_val] += 1
+        confusion_matrix[true_val-labels[0]][pred_val-labels[0]] += 1
     
     return confusion_matrix
 
-def get_true_false_positives_negatives(confusion_matrix):
-    classes = len(confusion_matrix)
+def get_true_false_positives_negatives(confusion_matrix, class_labels):
     
-    truth_table = {class_label: {"true_positives": 0, "false_positives": 0, "true_negatives": 0, "false_negatives": 0} for class_label in range(classes)}
+    truth_table = {class_label: {"true_positives": 0, "false_positives": 0, "true_negatives": 0, "false_negatives": 0} for class_label in class_labels}
 
-    for class_index in range(classes):
+    for class_index in class_labels:
+        class_index -= class_labels[0]
         true_positives = confusion_matrix[class_index][class_index]
-        false_positives = sum(confusion_matrix[row][class_index] for row in range(classes)) - true_positives
+        false_positives = sum(confusion_matrix[row][class_index] for row in range(len(class_labels))) - true_positives
         false_negatives = sum(confusion_matrix[class_index]) - true_positives
-        true_negatives = sum(sum(confusion_matrix[row][col] for col in range(classes)) for row in range(classes)) - (true_positives + false_positives + false_negatives)
+        true_negatives = sum(sum(confusion_matrix[row][col] for col in range(len(class_labels))) for row in range(len(class_labels))) - (true_positives + false_positives + false_negatives)
 
+        class_index += class_labels[0]
         truth_table[class_index]["true_positives"] = true_positives
         truth_table[class_index]["false_positives"] = false_positives
         truth_table[class_index]["true_negatives"] = true_negatives
@@ -45,7 +45,10 @@ def calculate_metrics(true_positive, false_positive, true_negative, false_negati
     recall = true_positive / positives
     precision = true_positive / (true_positive + false_positive)
 
-    f1_score = 2 * (precision * recall) / (precision + recall)
+    if precision + recall == 0:
+        f1_score = 0.0
+    else:
+        f1_score = 2 * (precision * recall) / (precision + recall)
 
     accuracy = (true_positive + true_negative) / (positives + negatives)
     error_rate = (false_positive + false_negative) / (positives + negatives)
@@ -59,14 +62,18 @@ def calculate_metrics(true_positive, false_positive, true_negative, false_negati
 # Still need the Brier score, Brier skill score, AUC, and SHAP values
 
 def get_performance_metrics(y_true, y_pred, y_prob):
-    
+    labels = sorted(set(y_true) | set(y_pred))
+
     confusion_matrix = get_confusion_matrix(y_true, y_pred)
 
-    performance_metrics = get_true_false_positives_negatives(confusion_matrix)
+    performance_metrics = get_true_false_positives_negatives(confusion_matrix, labels)
 
     for class_label in performance_metrics:
         performance_metrics[class_label].update(calculate_metrics(performance_metrics[class_label]["true_positives"], performance_metrics[class_label]["false_positives"], performance_metrics[class_label]["true_negatives"], performance_metrics[class_label]["false_negatives"]))
     
-    print(performance_metrics)
+    return(performance_metrics)
 
-test_data = np.random.rand
+import numpy as np
+test_data = np.random.randint(1, 10, 100)
+test_pred = np.random.randint(1, 10, 100)
+print(get_performance_metrics(test_data, test_pred, test_pred))

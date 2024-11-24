@@ -56,6 +56,7 @@ def calculate_metrics(true_positive, false_positive, true_negative, false_negati
 
     return {"positives": positives, "negatives": negatives, "true_positive_rate": true_positive_rate, "true_negative_rate": true_negative_rate, "false_positive_rate": false_positive_rate, "false_negative_rate": false_negative_rate, "recall": recall, "precision": precision, "f1_score": f1_score, "accuracy": accuracy, "error_rate": error_rate, "balanced_accuracy": balanced_accuracy, "true_skill_score": true_skill_score, "heidke_skill_score": heidke_skill_score}
 
+# Still need the Brier score, Brier skill score, AUC, and SHAP values
 
 def get_performance_metrics(y_true, y_pred, y_prob):
     
@@ -67,3 +68,5 @@ def get_performance_metrics(y_true, y_pred, y_prob):
         performance_metrics[class_label].update(calculate_metrics(performance_metrics[class_label]["true_positives"], performance_metrics[class_label]["false_positives"], performance_metrics[class_label]["true_negatives"], performance_metrics[class_label]["false_negatives"]))
     
     print(performance_metrics)
+
+test_data = np.random.rand

@@ -32,11 +32,51 @@ def get_true_false_positives_negatives(confusion_matrix):
     return truth_table
     
 
+def calculate_metrics(true_positive, false_positive, true_negative, false_negative):
+    
+    #Calculate performance metrics based on class slides
+    positives = true_positive + false_negative
+    negatives = true_negative + false_positive
+
+    true_positive_rate = true_positive / positives
+    true_negative_rate = true_negative / negatives
+    false_positive_rate = false_positive / negatives
+    false_negative_rate = false_negative / positives
+
+    recall = true_positive / positives
+    precision = true_positive / (true_positive + false_positive)
+
+    #F1 can encounter 0 division error
+    if precision + recall == 0:
+        f1_score = 0.0
+    else:
+        f1_score = 2 * (precision * recall) / (precision + recall)
+
+    accuracy = (true_positive + true_negative) / (positives + negatives)
+    error_rate = (false_positive + false_negative) / (positives + negatives)
+
+    balanced_accuracy = (true_positive_rate + true_negative_rate) / 2
+    true_skill_score = (true_positive / (true_positive + false_negative)) - (false_positive / (false_positive+true_negative))
+    heidke_skill_score = (2 * (true_positive * true_negative - false_positive * false_negative)) / ((true_positive + false_negative) * (false_negative + true_negative) + (true_positive + false_positive) * (false_positive + true_negative))
+
+    brier_score = 0 # temporary while solving
+
+    base_prob = 0 # temporary while solving
+    base_brier_score = 0 #temporary while solving
+    brier_skill_score = 1 - (brier_score / base_brier_score)
+
+    auc = 0 #temporary while solving
+
+    return [positives, negatives, true_positive_rate, true_negative_rate, false_positive_rate, false_negative_rate, recall, precision, f1_score, accuracy, error_rate, balanced_accuracy, true_skill_score, heidke_skill_score, brier_score, brier_skill_score, auc]
+
 
 def get_performance_metrics(y_true, y_pred, y_prob):
     
     confusion_matrix = get_confusion_matrix(y_true, y_pred)
 
-    truth_table = get_true_false_positives_negatives(confusion_matrix)
+    performance_metrics = get_true_false_positives_negatives(confusion_matrix)
 
-    print(truth_table)
+    for class_label in performance_metrics:
+        performance_metrics[class_label].update(calculate_metrics(performance_metrics[class_label]["true_positives"], performance_metrics[class_label]["false_positives"], performance_metrics[class_label]["true_negatives"], performance_metrics[class_label]["false_negatives"]))
+    
+    print(performance_metrics)

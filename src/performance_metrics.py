@@ -59,15 +59,7 @@ def calculate_metrics(true_positive, false_positive, true_negative, false_negati
     true_skill_score = (true_positive / (true_positive + false_negative)) - (false_positive / (false_positive+true_negative))
     heidke_skill_score = (2 * (true_positive * true_negative - false_positive * false_negative)) / ((true_positive + false_negative) * (false_negative + true_negative) + (true_positive + false_positive) * (false_positive + true_negative))
 
-    brier_score = 0 # temporary while solving
-
-    base_prob = 0 # temporary while solving
-    base_brier_score = 0 #temporary while solving
-    brier_skill_score = 1 - (brier_score / base_brier_score)
-
-    auc = 0 #temporary while solving
-
-    return [positives, negatives, true_positive_rate, true_negative_rate, false_positive_rate, false_negative_rate, recall, precision, f1_score, accuracy, error_rate, balanced_accuracy, true_skill_score, heidke_skill_score, brier_score, brier_skill_score, auc]
+    return {"positives": positives, "negatives": negatives, "true_positive_rate": true_positive_rate, "true_negative_rate": true_negative_rate, "false_positive_rate": false_positive_rate, "false_negative_rate": false_negative_rate, "recall": recall, "precision": precision, "f1_score": f1_score, "accuracy": accuracy, "error_rate": error_rate, "balanced_accuracy": balanced_accuracy, "true_skill_score": true_skill_score, "heidke_skill_score": heidke_skill_score}
 
 
 def get_performance_metrics(y_true, y_pred, y_prob):

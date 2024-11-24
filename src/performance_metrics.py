@@ -34,7 +34,6 @@ def get_true_false_positives_negatives(confusion_matrix):
 
 def calculate_metrics(true_positive, false_positive, true_negative, false_negative):
     
-    #Calculate performance metrics based on class slides
     positives = true_positive + false_negative
     negatives = true_negative + false_positive
 

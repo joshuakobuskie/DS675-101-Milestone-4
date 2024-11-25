@@ -1,5 +1,8 @@
 # ignore all .log files
 *.log
 
+# ignore all cache files
+/src/__pycache__
+
 # ignore all vscode folder
 /.vscode

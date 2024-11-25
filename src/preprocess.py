@@ -42,9 +42,10 @@ def preprocess_dataset(dataframe):
 	wake_times = pandas.to_datetime(dataframe['Wake-up Time'], format='%H:%M')
 	dataframe['Wake-up Time'] = wake_times.dt.hour * 60 + wake_times.dt.minute
 
-	#Standard normalization skipping ordinal data and target variable
-	for column in dataframe.columns:
-		if not column in ["Gender", "Physical Activity Level", "Dietary Habits", "Sleep Disorders", "Medication Usage", "Sleep Quality"]:
-			dataframe[column] -= dataframe[column].mean()
-			dataframe[column] /= dataframe[column].std()
+	# Standard normalization skipping ordinal data and target variable
+	# We should only scale based on train data, not test data to prevent leakage
+	# for column in dataframe.columns:
+	# 	if not column in ["Gender", "Physical Activity Level", "Dietary Habits", "Sleep Disorders", "Medication Usage", "Sleep Quality"]:
+	# 		dataframe[column] -= dataframe[column].mean()
+	# 		dataframe[column] /= dataframe[column].std()
 

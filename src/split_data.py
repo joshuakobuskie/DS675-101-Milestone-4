@@ -34,3 +34,6 @@ def train_test_split(dataframe, target, test_size=0.1, rand_state=None):
     train_dataframe = dataframe.loc[train_indexes].reset_index(drop=True)
     test_dataframe = dataframe.loc[test_indexes].reset_index(drop=True)
     return train_dataframe, test_dataframe
+
+# The above is great and all, but sklearn also has these methods
+# We can probably just get rid of this too

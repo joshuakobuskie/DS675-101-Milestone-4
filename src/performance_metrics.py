@@ -59,7 +59,34 @@ def calculate_metrics(true_positive, false_positive, true_negative, false_negati
 
     return {"positives": positives, "negatives": negatives, "true_positive_rate": true_positive_rate, "true_negative_rate": true_negative_rate, "false_positive_rate": false_positive_rate, "false_negative_rate": false_negative_rate, "recall": recall, "precision": precision, "f1_score": f1_score, "accuracy": accuracy, "error_rate": error_rate, "balanced_accuracy": balanced_accuracy, "true_skill_score": true_skill_score, "heidke_skill_score": heidke_skill_score}
 
+# Converts the multiclass results into aggregate results for model comparison
+def get_aggregate_metrics(metrics):
+    aggregate_metrics = {key: 0.0 for key in metrics[next(iter(metrics.keys()))]}
+    for key in metrics.keys():
+        for metric in metrics[key]:
+            aggregate_metrics[metric] += metrics[key][metric]
+
+    for metric in aggregate_metrics:
+        aggregate_metrics[metric] /= len(metrics)
+
+    return aggregate_metrics
+
 # Still need the Brier score, Brier skill score, AUC, and SHAP values
+
+# Gets the aggregate brier score
+def get_brier_score(y_true, y_prob):
+    brier_score = 0
+
+    for i in range(len(y_true)):
+        for j in range(len(y_prob)):
+            if y_true[i] == j:
+                actual = 1
+            else:
+                actual = 0
+
+            brier_score += (y_prob[i][j] - actual) ** 2
+
+    return brier_score / len(y_true)
 
 def get_performance_metrics(y_true, y_pred, y_prob):
     labels = sorted(set(y_true) | set(y_pred))
@@ -74,6 +101,40 @@ def get_performance_metrics(y_true, y_pred, y_prob):
     return(performance_metrics)
 
 import numpy as np
-test_data = np.random.randint(1, 10, 100)
-test_pred = np.random.randint(1, 10, 100)
-print(get_performance_metrics(test_data, test_pred, test_pred))
+test_data = np.random.randint(0, 10, size=100)
+test_proba = np.random.ranf((100, 10))
+test_proba /= test_proba.sum(axis=1, keepdims=True)
+test_pred = np.argmax(test_proba, axis=1)
+#class_metrics = get_performance_metrics(test_data, test_pred, test_pred)
+#model_metrics = get_aggregate_metrics(class_metrics)
+
+#print(class_metrics)
+#print("#"*128)
+#print(model_metrics)
+#print("#"*128)
+
+##################################################################
+# The above stuff works great, but we could just use this instead?
+# This is probably more safe, and we should be able to use it
+# We can probably get rid of this and just use below
+##################################################################
+
+from sklearn.metrics import precision_score, recall_score, f1_score, accuracy_score, roc_auc_score, confusion_matrix
+precision = precision_score(test_data, test_pred, average='macro')
+recall = recall_score(test_data, test_pred, average='macro')
+f1 = f1_score(test_data, test_pred, average='macro')
+accuracy = accuracy_score(test_data, test_pred)
+auc = roc_auc_score(test_data, test_proba, multi_class='ovr')
+conf_matrix = confusion_matrix(test_data, test_pred)
+
+print(precision, recall, f1, accuracy, auc)
+
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+# Plot the confusion matrix
+sns.heatmap(conf_matrix, annot=True, fmt="d", xticklabels=np.unique(test_data), yticklabels=np.unique(test_data))
+plt.xlabel("Predicted Labels")
+plt.ylabel("True Labels")
+plt.title("Confusion Matrix")
+plt.savefig('../assets/confusion_matrix.jpg')

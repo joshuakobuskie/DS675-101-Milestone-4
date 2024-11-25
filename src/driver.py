@@ -24,9 +24,6 @@ x_train[scaling_columns] = scaler.fit_transform(x_train[scaling_columns])
 x_test[scaling_columns] = scaler.transform(x_test[scaling_columns])
 
 generate_exploratory_metrics(dataframe)
-# print(dataframe)
-# print(train_dataframe)
-# print(test_dataframe)
 
 # Random forest classifier
 from sklearn.ensemble import RandomForestClassifier
@@ -42,4 +39,22 @@ f1 = f1_score(y_test, random_forest_pred, average='macro')
 accuracy = accuracy_score(y_test, random_forest_pred)
 auc = roc_auc_score(y_test, random_forest_proba, multi_class='ovr')
 
+print("Random Forest Classifier")
+print("Precision: {}, Recall: {}, F1: {}, Accuracy: {}, AUC: {}".format(precision, recall, f1, accuracy, auc))
+
+# Support Vector classifier
+from sklearn.svm import SVC
+svm = SVC(probability=True) 
+svm.fit(x_train, y_train)
+svm_pred = svm.predict(x_test)
+svm_proba = svm.predict_proba(x_test)
+
+from sklearn.metrics import precision_score, recall_score, f1_score, accuracy_score, roc_auc_score
+precision = precision_score(y_test, svm_pred, average='macro')
+recall = recall_score(y_test, svm_pred, average='macro')
+f1 = f1_score(y_test, svm_pred, average='macro')
+accuracy = accuracy_score(y_test, svm_pred)
+auc = roc_auc_score(y_test, svm_proba, multi_class='ovr')
+
+print("SVM")
 print("Precision: {}, Recall: {}, F1: {}, Accuracy: {}, AUC: {}".format(precision, recall, f1, accuracy, auc))

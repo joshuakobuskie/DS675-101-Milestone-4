@@ -30,6 +30,15 @@ def generate_exploratory_metrics(dataframe):
 	pyplot.subplots_adjust(hspace=0.5)
 	pyplot.savefig('../assets/distribution_plots.jpg')
 
+	# Target variable distribution
+	pyplot.figure(figsize=(8, 6))
+	pyplot.bar(dataframe["Sleep Quality"].value_counts().sort_index().index, dataframe["Sleep Quality"].value_counts().sort_index().values)
+	pyplot.title("Target Variable Distribution")
+	pyplot.xlabel("Target Variable")
+	pyplot.ylabel("Frequency")
+	pyplot.tight_layout()
+	pyplot.savefig('../assets/target_variable_distribution.jpg')
+
 	pyplot.figure()
 	fig, ax = pyplot.subplots(figsize=(10, 3))
 	pyplot.subplots_adjust(hspace=0)

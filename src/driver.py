@@ -54,7 +54,7 @@ n_estimators_optimal = study.best_params['n_estimators']
 
 #Hyperparameter optimization graph
 pyplot.figure()
-pyplot.title("Regularization coefficient vs f1 score")
+pyplot.title("n_estimators vs f1 score")
 pyplot.xlabel("C")
 pyplot.ylabel("F1 score")
 pyplot.scatter(n_estimators_values, random_forest_f1_scores)

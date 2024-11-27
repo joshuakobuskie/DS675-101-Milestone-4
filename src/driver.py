@@ -6,7 +6,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.svm import SVC
-from metrics import get_perf_metrics, save_conf_matrix
+from metrics import get_perf_metrics, save_conf_matrix, save_shap
 from sklearn.metrics import confusion_matrix
 import seaborn as sns
 import shap
@@ -39,29 +39,11 @@ random_forest_proba = random_forest.predict_proba(x_test)
 #Metrics
 precision, recall, f1, accuracy, auc = get_perf_metrics(y_test, random_forest_pred, random_forest_proba)
 
-#This could definitely just be defined as a function and called
 #Confusion Matrix
 save_conf_matrix(y_test, random_forest_pred, '../assets/random_forest_confusion_matrix.jpg')
 
-#This could definitely just be defined as a function and called
 #SHAP values
-explainer = shap.Explainer(random_forest.predict, x_test)
-shap_values = explainer(x_test)
-
-shap.plots.bar(shap_values, show=False)
-pyplot.savefig('../assets/random_forest_shap_values_bar.jpg')
-pyplot.clf()
-pyplot.close()
-
-shap.summary_plot(shap_values, show=False)
-pyplot.savefig('../assets/random_forest_shap_values_summary.jpg')
-pyplot.clf()
-pyplot.close()
-
-shap.summary_plot(shap_values, plot_type='violin', show=False)
-pyplot.savefig('../assets/random_forest_shap_values_violin.jpg')
-pyplot.clf()
-pyplot.close()
+save_shap(random_forest.predict, x_test, "random_forest")
 
 print("Random Forest Classifier")
 print("Precision: {}, Recall: {}, F1: {}, Accuracy: {}, AUC: {}".format(precision, recall, f1, accuracy, auc))
@@ -78,24 +60,8 @@ precision, recall, f1, accuracy, auc = get_perf_metrics(y_test, svm_pred, svm_pr
 #Confusion Matrix
 save_conf_matrix(y_test, svm_pred, '../assets/svm_confusion_matrix.jpg')
 
-#This could definitely just be defined as a function and called
 #SHAP Values
-explainer = shap.Explainer(svm.predict, x_test)
-shap_values = explainer(x_test)
-
-shap.plots.bar(shap_values, show=False)
-pyplot.savefig('../assets/svm_shap_values_bar.jpg')
-pyplot.clf()
-pyplot.close()
-
-shap.summary_plot(shap_values, show=False)
-pyplot.savefig('../assets/svm_shap_values_summary.jpg')
-pyplot.clf()
-pyplot.close()
-shap.summary_plot(shap_values, plot_type='violin', show=False)
-pyplot.savefig('../assets/svm_shap_values_violin.jpg')
-pyplot.clf()
-pyplot.close()
+save_shap(svm.predict, x_test, "svm")
 
 print("SVM")
 print("Precision: {}, Recall: {}, F1: {}, Accuracy: {}, AUC: {}".format(precision, recall, f1, accuracy, auc))

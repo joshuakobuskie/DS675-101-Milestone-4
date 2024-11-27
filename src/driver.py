@@ -6,7 +6,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.svm import SVC
-from metrics import get_perf_metrics
+from metrics import get_perf_metrics, save_conf_matrix
 from sklearn.metrics import confusion_matrix
 import seaborn as sns
 import shap
@@ -41,15 +41,7 @@ precision, recall, f1, accuracy, auc = get_perf_metrics(y_test, random_forest_pr
 
 #This could definitely just be defined as a function and called
 #Confusion Matrix
-conf_matrix = confusion_matrix(y_test, random_forest_pred)
-sns.heatmap(conf_matrix, annot=True, fmt='g')
-pyplot.title("Confusion Matrix")
-pyplot.xlabel("Predicted Label")
-pyplot.ylabel("True Label")
-pyplot.tight_layout()
-pyplot.savefig('../assets/random_forest_confusion_matrix.jpg')
-pyplot.clf()
-pyplot.close()
+save_conf_matrix(y_test, random_forest_pred, '../assets/random_forest_confusion_matrix.jpg')
 
 #This could definitely just be defined as a function and called
 #SHAP values
@@ -83,17 +75,8 @@ svm_proba = svm.predict_proba(x_test)
 #Metrics
 precision, recall, f1, accuracy, auc = get_perf_metrics(y_test, svm_pred, svm_proba)
 
-#This could definitely just be defined as a function and called
 #Confusion Matrix
-conf_matrix = confusion_matrix(y_test, random_forest_pred)
-sns.heatmap(conf_matrix, annot=True, fmt='g')
-pyplot.title("Confusion Matrix")
-pyplot.xlabel("Predicted Label")
-pyplot.ylabel("True Label")
-pyplot.tight_layout()
-pyplot.savefig('../assets/svm_confusion_matrix.jpg')
-pyplot.clf()
-pyplot.close()
+save_conf_matrix(y_test, svm_pred, '../assets/svm_confusion_matrix.jpg')
 
 #This could definitely just be defined as a function and called
 #SHAP Values

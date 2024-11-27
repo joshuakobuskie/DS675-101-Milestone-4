@@ -10,6 +10,7 @@ from metrics import get_perf_metrics, save_conf_matrix, save_shap
 from sklearn.metrics import confusion_matrix
 import seaborn as sns
 import shap
+import optuna
 #from split_data import train_test_split
 
 dataframe = pandas.read_csv("../data/Health_Sleep_Statistics.csv")
@@ -30,14 +31,37 @@ x_test[scaling_columns] = scaler.transform(x_test[scaling_columns])
 
 generate_exploratory_metrics(dataframe)
 
+
+n_estimators_values = []
 # Random forest classifier
-random_forest = RandomForestClassifier(n_estimators = 100) 
+def random_forest_optimizer(trial):
+	n_estimators = trial.suggest_int('n_estimators', 10, 100)
+	random_forest = RandomForestClassifier(n_estimators = n_estimators) 
+	random_forest.fit(x_train, y_train)
+	random_forest_pred = random_forest.predict(x_test)
+	random_forest_proba = random_forest.predict_proba(x_test)
+
+	#Metrics
+	precision, recall, f1, accuracy, auc = get_perf_metrics(y_test, random_forest_pred, random_forest_proba)
+	print("Random Forest Classifier")
+	print("n_estimators: {}".format(n_estimators))
+	print("Precision: {}, Recall: {}, F1: {}, Accuracy: {}, AUC: {}".format(precision, recall, f1, accuracy, auc))
+	n_estimators_values.append(n_estimators)
+	return f1
+
+study = optuna.create_study(direction="maximize")
+study.optimize(random_forest_optimizer, n_trials=10)
+n_estimators_optimal = study.best_params['n_estimators']
+
+random_forest = RandomForestClassifier(n_estimators = n_estimators_optimal) 
 random_forest.fit(x_train, y_train)
 random_forest_pred = random_forest.predict(x_test)
 random_forest_proba = random_forest.predict_proba(x_test)
 
 #Metrics
 precision, recall, f1, accuracy, auc = get_perf_metrics(y_test, random_forest_pred, random_forest_proba)
+print("Optimized Random Forest Classifier")
+print("Precision: {}, Recall: {}, F1: {}, Accuracy: {}, AUC: {}".format(precision, recall, f1, accuracy, auc))
 
 #Confusion Matrix
 save_conf_matrix(y_test, random_forest_pred, '../assets/random_forest_confusion_matrix.jpg')

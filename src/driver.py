@@ -33,9 +33,10 @@ generate_exploratory_metrics(dataframe)
 
 
 n_estimators_values = []
+random_forest_f1_scores = []
 # Random forest classifier
 def random_forest_optimizer(trial):
-	n_estimators = trial.suggest_int('n_estimators', 10, 100)
+	n_estimators = trial.suggest_int('n_estimators', 1, 20)
 	random_forest = RandomForestClassifier(n_estimators = n_estimators) 
 	random_forest.fit(x_train, y_train)
 	random_forest_pred = random_forest.predict(x_test)
@@ -43,15 +44,21 @@ def random_forest_optimizer(trial):
 
 	#Metrics
 	precision, recall, f1, accuracy, auc = get_perf_metrics(y_test, random_forest_pred, random_forest_proba)
-	print("Random Forest Classifier")
-	print("n_estimators: {}".format(n_estimators))
-	print("Precision: {}, Recall: {}, F1: {}, Accuracy: {}, AUC: {}".format(precision, recall, f1, accuracy, auc))
 	n_estimators_values.append(n_estimators)
+	random_forest_f1_scores.append(f1)
 	return f1
 
 study = optuna.create_study(direction="maximize")
-study.optimize(random_forest_optimizer, n_trials=10)
+study.optimize(random_forest_optimizer, n_trials=50)
 n_estimators_optimal = study.best_params['n_estimators']
+
+#Hyperparameter optimization graph
+pyplot.figure()
+pyplot.title("Regularization coefficient vs f1 score")
+pyplot.xlabel("C")
+pyplot.ylabel("F1 score")
+pyplot.scatter(n_estimators_values, random_forest_f1_scores)
+pyplot.savefig("../assets/random_forest_hyperparameter_optimization.jpg")
 
 random_forest = RandomForestClassifier(n_estimators = n_estimators_optimal) 
 random_forest.fit(x_train, y_train)
@@ -69,11 +76,28 @@ save_conf_matrix(y_test, random_forest_pred, '../assets/random_forest_confusion_
 #SHAP values
 save_shap(random_forest.predict, x_test, "random_forest")
 
-print("Random Forest Classifier")
-print("Precision: {}, Recall: {}, F1: {}, Accuracy: {}, AUC: {}".format(precision, recall, f1, accuracy, auc))
-
 # Support Vector classifier
-svm = SVC(probability=True) 
+gamma_values = []
+svm_f1_scores = []
+def svm_optimizer(trial):
+	gamma = trial.suggest_float('gamma', 0.0001, 0.3)
+	gamma_values.append(gamma)
+	svm = SVC(probability=True, kernel="poly", gamma=gamma) 
+	svm.fit(x_train, y_train)
+	svm_pred = svm.predict(x_test)
+	svm_proba = svm.predict_proba(x_test)
+
+	#Metrics
+	precision, recall, f1, accuracy, auc = get_perf_metrics(y_test, svm_pred, svm_proba)
+
+	svm_f1_scores.append(f1)
+	return f1
+
+study = optuna.create_study(direction="maximize")
+study.optimize(svm_optimizer, n_trials=50)
+gamma_optimal = study.best_params['gamma']
+
+svm = SVC(probability=True, gamma=gamma_optimal) 
 svm.fit(x_train, y_train)
 svm_pred = svm.predict(x_test)
 svm_proba = svm.predict_proba(x_test)
@@ -87,5 +111,14 @@ save_conf_matrix(y_test, svm_pred, '../assets/svm_confusion_matrix.jpg')
 #SHAP Values
 save_shap(svm.predict, x_test, "svm")
 
-print("SVM")
+#Hyperparameter optimization graph
+pyplot.figure()
+pyplot.title("Gamma coefficient vs f1 score")
+pyplot.xlabel("Gamma")
+pyplot.ylabel("F1 score")
+pyplot.scatter(gamma_values, svm_f1_scores)
+pyplot.savefig("../assets/svm_hyperparameter_optimization.jpg")
+
+print("Optimized SVM")
 print("Precision: {}, Recall: {}, F1: {}, Accuracy: {}, AUC: {}".format(precision, recall, f1, accuracy, auc))
+

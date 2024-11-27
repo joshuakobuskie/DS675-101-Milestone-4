@@ -6,7 +6,8 @@ from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.svm import SVC
-from sklearn.metrics import precision_score, recall_score, f1_score, accuracy_score, roc_auc_score
+from sklearn.metrics import precision_score, recall_score, f1_score, accuracy_score, roc_auc_score, confusion_matrix
+import seaborn as sns
 import shap
 #from split_data import train_test_split
 
@@ -34,12 +35,28 @@ random_forest.fit(x_train, y_train)
 random_forest_pred = random_forest.predict(x_test)
 random_forest_proba = random_forest.predict_proba(x_test)
 
+#This could definitely just be defined as a function and called
+#Metrics
 precision = precision_score(y_test, random_forest_pred, average='macro')
 recall = recall_score(y_test, random_forest_pred, average='macro')
 f1 = f1_score(y_test, random_forest_pred, average='macro')
 accuracy = accuracy_score(y_test, random_forest_pred)
 auc = roc_auc_score(y_test, random_forest_proba, multi_class='ovr')
 
+#This could definitely just be defined as a function and called
+#Confusion Matrix
+conf_matrix = confusion_matrix(y_test, random_forest_pred)
+sns.heatmap(conf_matrix, annot=True, fmt='g')
+pyplot.title("Confusion Matrix")
+pyplot.xlabel("Predicted Label")
+pyplot.ylabel("True Label")
+pyplot.tight_layout()
+pyplot.savefig('../assets/random_forest_confusion_matrix.jpg')
+pyplot.clf()
+pyplot.close()
+
+#This could definitely just be defined as a function and called
+#SHAP values
 explainer = shap.Explainer(random_forest.predict, x_test)
 shap_values = explainer(x_test)
 
@@ -67,12 +84,28 @@ svm.fit(x_train, y_train)
 svm_pred = svm.predict(x_test)
 svm_proba = svm.predict_proba(x_test)
 
+#This could definitely just be defined as a function and called
+#Metrics
 precision = precision_score(y_test, svm_pred, average='macro')
 recall = recall_score(y_test, svm_pred, average='macro')
 f1 = f1_score(y_test, svm_pred, average='macro')
 accuracy = accuracy_score(y_test, svm_pred)
 auc = roc_auc_score(y_test, svm_proba, multi_class='ovr')
 
+#This could definitely just be defined as a function and called
+#Confusion Matrix
+conf_matrix = confusion_matrix(y_test, random_forest_pred)
+sns.heatmap(conf_matrix, annot=True, fmt='g')
+pyplot.title("Confusion Matrix")
+pyplot.xlabel("Predicted Label")
+pyplot.ylabel("True Label")
+pyplot.tight_layout()
+pyplot.savefig('../assets/svm_confusion_matrix.jpg')
+pyplot.clf()
+pyplot.close()
+
+#This could definitely just be defined as a function and called
+#SHAP Values
 explainer = shap.Explainer(svm.predict, x_test)
 shap_values = explainer(x_test)
 

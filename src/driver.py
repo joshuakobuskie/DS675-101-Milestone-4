@@ -85,7 +85,6 @@ shap.summary_plot(shap_values)
 pyplot.savefig('../assets/svm_shap_values_summary.jpg')
 pyplot.clf()
 pyplot.close()
-
 shap.summary_plot(shap_values, plot_type='violin')
 pyplot.savefig('../assets/svm_shap_values_violin.jpg')
 pyplot.clf()

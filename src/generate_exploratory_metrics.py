@@ -4,7 +4,7 @@ def generate_exploratory_metrics(dataframe):
 	correlation_matrix = dataframe.corr()
 	feature_names = dataframe.columns.to_numpy()
 	
-	pyplot.figure()
+	#pyplot.figure()
 	fig, ax = pyplot.subplots(figsize=(10, 10))
 	pyplot.title('Correlation matrix')
 	pyplot.xticks(rotation=90, ticks=range(len(feature_names)), labels = feature_names, fontsize=15)
@@ -21,7 +21,7 @@ def generate_exploratory_metrics(dataframe):
 	pyplot.clf()
 	pyplot.close()
 
-	pyplot.figure()
+	#pyplot.figure()
 	fig, ax = pyplot.subplots(4, 3, figsize=(12, 10))
 	for i in range(11):
 		column = dataframe[feature_names[i]]
@@ -44,7 +44,7 @@ def generate_exploratory_metrics(dataframe):
 	pyplot.clf()
 	pyplot.close()
 
-	pyplot.figure()
+	#pyplot.figure()
 	fig, ax = pyplot.subplots(figsize=(10, 3))
 	pyplot.subplots_adjust(hspace=0)
 	pyplot.axis('off')

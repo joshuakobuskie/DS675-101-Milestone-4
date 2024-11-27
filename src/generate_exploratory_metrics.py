@@ -1,4 +1,3 @@
-import numpy
 from matplotlib import pyplot
 
 def generate_exploratory_metrics(dataframe):
@@ -19,6 +18,8 @@ def generate_exploratory_metrics(dataframe):
 			ax.text(j, i, f'{value:.2f}', ha='center', va='center', fontsize=15, color = 'black' if value > 0 else 'white')
 			
 	pyplot.savefig('../assets/correlation_matrix.jpg')
+	pyplot.clf()
+	pyplot.close()
 
 	pyplot.figure()
 	fig, ax = pyplot.subplots(4, 3, figsize=(12, 10))
@@ -29,6 +30,8 @@ def generate_exploratory_metrics(dataframe):
 
 	pyplot.subplots_adjust(hspace=0.5)
 	pyplot.savefig('../assets/distribution_plots.jpg')
+	pyplot.clf()
+	pyplot.close()
 
 	# Target variable distribution
 	pyplot.figure(figsize=(8, 6))
@@ -38,6 +41,8 @@ def generate_exploratory_metrics(dataframe):
 	pyplot.ylabel("Frequency")
 	pyplot.tight_layout()
 	pyplot.savefig('../assets/target_variable_distribution.jpg')
+	pyplot.clf()
+	pyplot.close()
 
 	pyplot.figure()
 	fig, ax = pyplot.subplots(figsize=(10, 3))
@@ -49,3 +54,5 @@ def generate_exploratory_metrics(dataframe):
 	table.auto_set_font_size(False)
 	table.set_fontsize(9)
 	pyplot.savefig('../assets/target_variable_correlations.jpg', bbox_inches='tight')
+	pyplot.clf()
+	pyplot.close()

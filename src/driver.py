@@ -1,6 +1,7 @@
 import pandas
 from preprocess import preprocess_dataset
 from generate_exploratory_metrics import generate_exploratory_metrics
+from matplotlib import pyplot
 #from split_data import train_test_split
 
 dataframe = pandas.read_csv("../data/Health_Sleep_Statistics.csv")
@@ -38,6 +39,25 @@ recall = recall_score(y_test, random_forest_pred, average='macro')
 f1 = f1_score(y_test, random_forest_pred, average='macro')
 accuracy = accuracy_score(y_test, random_forest_pred)
 auc = roc_auc_score(y_test, random_forest_proba, multi_class='ovr')
+
+import shap
+explainer = shap.Explainer(random_forest.predict, x_test)
+shap_values = explainer(x_test)
+
+shap.plots.bar(shap_values)
+pyplot.savefig('../assets/shap_values_bar.jpg')
+pyplot.clf()
+pyplot.close()
+
+shap.summary_plot(shap_values)
+pyplot.savefig('../assets/shap_values_summary.jpg')
+pyplot.clf()
+pyplot.close()
+
+shap.summary_plot(shap_values, plot_type='violin')
+pyplot.savefig('../assets/shap_values_violin.jpg')
+pyplot.clf()
+pyplot.close()
 
 print("Random Forest Classifier")
 print("Precision: {}, Recall: {}, F1: {}, Accuracy: {}, AUC: {}".format(precision, recall, f1, accuracy, auc))

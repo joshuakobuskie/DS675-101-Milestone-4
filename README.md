@@ -17,3 +17,8 @@ NJIT Fall 2024: DS675-101 Machine Learning - Project Milestone 4
 - [ ] f1-score, AUC-ROC or R2 score (for regression)
 - [ ] SHAP value of each feature
 - [ ] Interpretation of the model (for simple models like Logistic Regression, interpretation of the final weights, for decision trees the plot of the trees, etc.)
+
+## Deliverables
+- [ ] A report on the ideas that were tried and the practical results obtained. The report should emphasize what differentiates our work from previous work on Kaggle
+- [ ] A 20 minute video presenting the work. All members must participate in the video presentation
+- [ ] The contributions and responsibility of each member must be stated in the report and presentation

@@ -20,6 +20,6 @@ NJIT Fall 2024: DS675-101 Machine Learning - Project Milestone 4
 
 ## Deliverables
 - [ ] A report on the ideas that were tried and the practical results obtained. The report should emphasize what differentiates our work from previous work on Kaggle
-- [ ] A 20 minute video presenting the work. All members must participate in the video presentation
+- [ ] A 20 minute video presenting the work. All members must participate in the video presentation. The report must contain a link to the video
 - [ ] The contributions and responsibility of each member must be stated in the report and presentation
-- [ ] ipynb containing the experiments as a jupyter notebook. The ipynb file cannot contain different results than what is in the report.
+- [ ] An ipynb containing the experiments as a jupyter notebook. The ipynb file cannot contain different results than what is in the report. A link to the ipynb file must be available in the report. 

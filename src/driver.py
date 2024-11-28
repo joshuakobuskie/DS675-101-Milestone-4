@@ -55,7 +55,7 @@ n_estimators_optimal = study.best_params['n_estimators']
 #Hyperparameter optimization graph
 pyplot.figure()
 pyplot.title("n_estimators vs f1 score")
-pyplot.xlabel("C")
+pyplot.xlabel("n_estimators")
 pyplot.ylabel("F1 score")
 pyplot.scatter(n_estimators_values, random_forest_f1_scores)
 pyplot.savefig("../assets/random_forest_hyperparameter_optimization.jpg")
